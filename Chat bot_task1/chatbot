@@ -1,0 +1,57 @@
+import re
+
+def simple_chatbot(user_input):
+    # Convert user input to lowercase for case-insensitive matching
+    user_input = user_input.lower()
+
+    # Define rules and responses
+    greetings = ['hello', 'hi', 'hey', 'greetings']
+    farewells = ['bye', 'goodbye', 'see you', 'farewell']
+    questions = ['how are you', 'what is your name', 'who are you', 'what do you do', 'what is your favorite color']
+    default_response = "I'm a simple chatbot. You can greet me or ask me something."
+
+    # Check for matches and provide responses
+    if any(greeting in user_input for greeting in greetings):
+        return "Hello! How can I help you today?"
+
+    elif any(farewell in user_input for farewell in farewells):
+        return "Goodbye! Have a great day."
+
+    elif any(question in user_input for question in questions):
+        if 'how are you' in user_input:
+            return "I'm a computer program, but thanks for asking! How can I assist you?"
+        elif 'what is your name' in user_input or 'who are you' in user_input:
+            return "I'm a chatbot. You can call me bot."
+        elif "I want to start working out at home. Any simple exercises I can do?"in user_input:
+            return "Absolutely! Some good exercises to start with are push-ups, squats, lunges, and planks. They dont require any equipment and can be very effective."in user_input
+        elif "Great, Ill give those a try. Thanks for the tips!"in user_input:
+            return "Youre welcome! Good luck with your workouts!"in user_input
+        elif "Im in the mood for a comedy."in user_input:
+            return "Great choice! How about Superbad? Its a hilarious film with a lot of laughs."in user_input
+        elif  "Can you suggest a movie to watch?"in user_input:
+            return "Sure! What kind of movie are you in the mood for? Action, comedy, drama, or something else?"
+        elif "I want to learn how to play the guitar. Any advice for a beginner?"in user_input:
+            return "Start with the basics: learn how to tune your guitar and practice simple chords like G, C, and D. There are many online tutorials and apps that can guide you through the process. Practice regularly and be patient with yourself."in user_input
+        elif 'what do you do' in user_input:
+            return "I'm here to chat with you and answer your questions. What can I do for you today?"
+        elif 'what is your favorite color' in user_input:
+            return "As a program, I don't have a favorite color. But let's talk about your preferences instead!"
+        else:
+            return "I'm just a chatbot. You can call me bot."
+
+    else:
+        return default_response
+     
+
+
+# Example usage
+print("I'm bot how can i help you ")
+print("_")
+while True:
+    user_input = input("You: ")
+
+    if user_input.lower() == 'exit':
+        print("Chatbot: Goodbye!")
+        break
+    response = simple_chatbot(user_input)
+    print("Chatbot:",response)

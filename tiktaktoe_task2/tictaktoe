@@ -1,0 +1,100 @@
+import math
+
+def print_board(board):
+    for i in range(3):
+        print(' | '.join(board[i*3:(i+1)*3]))
+        if i < 2:
+            print('---------')
+
+def check_winner(board, mark):
+    win_conditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
+        [0, 4, 8], [2, 4, 6]               # Diagonals
+    ]
+    for condition in win_conditions:
+        if all(board[i] == mark for i in condition):
+            return True
+    return False
+
+def get_available_moves(board):
+    return [i for i in range(9) if board[i] == ' ']
+
+def minimax(board, depth, is_maximizing):
+    if check_winner(board, 'O'):
+        return 10 - depth
+    if check_winner(board, 'X'):
+        return depth - 10
+    if not get_available_moves(board):
+        return 0
+    
+    if is_maximizing:
+        best_score = -math.inf
+        for move in get_available_moves(board):
+            board[move] = 'O'
+            score = minimax(board, depth + 1, False)
+            board[move] = ' '
+            best_score = max(score, best_score)
+        return best_score
+    else:
+        best_score = math.inf
+        for move in get_available_moves(board):
+            board[move] = 'X'
+            score = minimax(board, depth + 1, True)
+            board[move] = ' '
+            best_score = min(score, best_score)
+        return best_score
+
+def ai_move(board):
+    best_score = -math.inf
+    best_move = None
+    for move in get_available_moves(board):
+        board[move] = 'O'
+        score = minimax(board, 0, False)
+        board[move] = ' '
+        if score > best_score:
+            best_score = score
+            best_move = move
+    return best_move
+
+def tic_tac_toe():
+    board = [' '] * 9
+    player_turn = True  # True for X (player), False for O (AI)
+    print("Tic-Tac-Toe Game with Minimax AI!")
+
+    for turn in range(9):
+        print_board(board)
+        if player_turn:
+            mark = 'X'
+            print("Player X's turn.")
+            try:
+                move = int(input("Enter your move (1-9): ")) - 1
+                if move < 0 or move > 8 or board[move] != ' ':
+                    print("Invalid move. Try again.")
+                    continue
+            except ValueError:
+                print("Invalid input. Please enter a number between 1 and 9.")
+                continue
+        else:
+            mark = 'O'
+            print("AI's turn.")
+            move = ai_move(board)
+            print(f"AI chooses move {move + 1}")
+        
+        board[move] = mark
+        
+        if check_winner(board, mark):
+            print_board(board)
+            if player_turn:
+                print("Player X wins!")
+            else:
+                print("AI wins!")
+            return
+        
+        player_turn = not player_turn
+    
+    print_board(board)
+    print("It's a tie!")
+
+# To play the game, simply call tic_tac_toe()
+tic_tac_toe()
